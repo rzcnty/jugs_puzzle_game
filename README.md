@@ -34,3 +34,18 @@ larger jug. For example, in the example below, the aim is to hold exactly 2 lite
 larger jug when there are 5- and 3-liter jugs. Find solutions for two separate problems where
 there are 2 jugs and 3 jugs.
 (https://www.mathsisfun.com/games/jugs-puzzle.html)
+
+## THINGS TO DO:
+
+1. Compute_Heuristic_Function in SpecificToProblem.c: We will try multiple heuristic functions and try to find the best one when the code is complete, so a switch-case structure containing multiple heuristic functions should be written here.
+2. Goal_Test in SpecificToProblem.c: A structure like the one above can be considered for this, different heuristics can contain different goal definitions, maybe.
+3. Main function in SpecificToProblem.c: When the code is run, inform the user, ask which heuristic function he wants to use, etc. Simply, a main function.
+4. GRAPH_SEARCH.h: I have never looked, I do not know the file content. Check the table above.
+5. Debugging: After the code is complete, we should find and fix the errors in the code and make the code work. (I probably made a mistake somewhere.)
+6. After the code is working successfully: Try out the heuristic functions and test which one is the most optimal, whether they are admissible, etc.
+7. Write a report: At the top, under the title "The following information should be included in the project report:" the report content is written.
+8. Prepare a presentation file. Quote from the pdf: "Project presentations will be made during the course time on 16 May, 23 May and 30 May (in the last 3 weeks). Each group member must participate, and presentations should not exceed 20-25 minutes in total."
+
+Read not only this title, but also the above, check the table and look at the changed parts. If there is something you do not understand, send me a message or call me, I will try to explain. And we have 3 days left for all this. Good luck to all :))
+
+-Riza
