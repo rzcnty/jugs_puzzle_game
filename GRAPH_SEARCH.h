@@ -7,8 +7,8 @@
 #define CITY_NUMBER  20
 
 // ========  YOUR COMPULSORY (BUT SPECIFIC TO THE PROBLEM) COMMANDS ============ 
-#define PREDETERMINED_GOAL_STATE  1 // User will initially determine the goal state if it is true (1)
-#define ACTIONS_NUMBER  20          // The number of all possible actions
+#define PREDETERMINED_GOAL_STATE  0 // User will initially determine the goal state if it is true (1)
+#define ACTIONS_NUMBER  12          // The number of all possible actions
 #define MAX_SEARCHED_NODE 100000000 // exit from the search process if it is exceeded  
 
 // ================== YOU DO NOT NEED TO CHANGE THIS PART ======================
@@ -25,6 +25,7 @@ void Print_Action(const enum ACTIONS action);
 int Result(const State *const parent_state, const enum ACTIONS action, Transition_Model *const trans_model);
 float Compute_Heuristic_Function(const State *const state, const State *const goal); 
 int Goal_Test(const State *const state, const State *const goal_state);
+int Get_Actions(const State *const state, enum ACTIONS applicable_actions[]);
 
 // ======= YOU DO NOT NEED TO CHANGE THIS COMPULSORY DECLARATIONS EXCEPT INSERTION OF THE GENERALIZED A* ALGORITHM==============
 Node* First_GoalTest_Search_TREE(const enum METHODS method, Node *const root, State *const goal_state);

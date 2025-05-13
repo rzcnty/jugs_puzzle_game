@@ -38,6 +38,7 @@ void Generate_HashTable_Key(const State *const state, unsigned char* key)
         exit(-1);
     }
 }
+}
 /* To explain it simply, 
    if the level of our jugs is 5 and 2 respectively (i.e. state ->jug_levels[5,2] )
    this function will generate the key "5,2"

@@ -2,10 +2,7 @@
 #define DATA_TYPES_H
 #include <stdio.h>
 
-const int NUM_JUGS=2; /*The number of jugs 
-(In the future, we will make this value 3, because the teacher asked us for a 2 and 3 jugs solution.)*/
-const int JUG_CAPACITIES[NUM_JUGS]={5,3}; //Jug capacities
-const int TARGET_AMOUNT = 2; //Target
+#define NUM_JUGS 2 // or 3
 
 enum ACTIONS 
 {
@@ -28,6 +25,8 @@ enum ACTIONS
 typedef struct State
 {
     int jug_levels[NUM_JUGS]; //Water level in each jug
+    float h_n;
+    
 } State;
 
 /*For example,

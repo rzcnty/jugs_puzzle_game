@@ -11,6 +11,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#if NUM_JUGS==2
+    const int JUG_CAPACITIES[NUM_JUGS] = {5, 3};
+    const int TARGET_AMOUNT = 4;
+#else
+    const int JUG_CAPACITIES[NUM_JUGS] = {8, 5, 3};
+    const int TARGET_AMOUNT = 4;
+#endif
+int choice_of_heuristic=0;
+
 //______________________________________________________________________________
 State* Create_State()
 {
@@ -18,7 +27,7 @@ State* Create_State()
     if(state==NULL)
     	Warning_Memory_Allocation(); 
    
-    for (i=0; i<NUM_JUGS; i++) {
+    for (int i=0; i<NUM_JUGS; i++) {
         state->jug_levels[i] = 0;
     }
     
@@ -32,13 +41,12 @@ State* Create_State()
 //______________________________________________________________________________
 void Print_State(const State *const state)
 {
-    int i;
     if (state==NULL) {
         printf("NULL_State ");
         return;
     }
 
-    for (i = 0; i < NUM_JUGS; i++) {
+    for (int i = 0; i < NUM_JUGS; i++) {
         printf("%d ", state->jug_levels[i]);
     }
     printf("\n");
@@ -72,8 +80,7 @@ int Result(const State *const parent_state, const enum ACTIONS action, Transitio
 	int amount_to_pour;
     int empty_space_in_target;
     
-    if (action==FILL_JUG_2 || action==EMPTY_JUG_2 || action==POUR_0_TO_2 ||action==POUR_2_TO_0 || action==POUR_1_TO_2 || action==POUR_2_TO_1) {
-        if (NUM_JUGS < 3) {
+    if (action==FILL_JUG_2 || action==EMPTY_JUG_2 || action==POUR_0_TO_2 ||action==POUR_2_TO_0 || action==POUR_1_TO_2 || action==POUR_2_TO_1 && NUM_JUGS<3) {    	
             return 0;
         }
 
@@ -152,7 +159,7 @@ int Result(const State *const parent_state, const enum ACTIONS action, Transitio
             next_state.jug_levels[1]+=amount_to_pour;
             break;
         default:
-             printf("ERROR in Result Func", action);
+             printf("ERROR in Result Func");
              return 0;
     }
     trans_model->new_state=next_state;
@@ -163,40 +170,56 @@ int Result(const State *const parent_state, const enum ACTIONS action, Transitio
 //______________________________________________________________________________
 float Compute_Heuristic_Function(const State *const state, const State *const goal)
 {
-      const float SLD[CITY_NUMBER][CITY_NUMBER] =   // CALCULATED ROUGHLY!!!
-        {   {  0, 366, 300, 220, 590, 235, 430, 535, 420, 168, 225, 355, 110, 290, 185, 130, 105, 435, 470,  67},  // Arad
-            {366,   0, 160, 242, 161, 176,  77, 151, 226, 244, 241, 234, 380, 100, 193, 253, 329,  80, 199, 374},  // Bucharest
-			{300, 160,   0, 102, 325, 210, 142, 325, 368, 145, 110, 388, 355, 133, 138, 190, 220, 220, 385, 330},  // Craiova
-			{220, 242, 102,   0, 390, 245, 240, 380, 400, 100,  70, 460, 310, 190, 155, 205, 150, 302, 410, 265},  // Drobeta
-			{590, 161, 325, 390,   0, 325, 205,  80, 245, 400, 375, 350, 595, 265, 340, 395, 555, 130, 260, 593},  // Eforie
-			{235, 176, 210, 245, 325,   0, 200, 251, 180, 175, 185, 135, 220, 102,  85,  95, 255, 195, 200, 227},  // F 
-			{430,  77, 142, 240, 205, 200,   0, 213, 297, 245, 280, 285, 410, 125, 225, 285, 330, 120, 230, 520},  // G
-			{535, 151, 325, 380,  80, 251, 213,   0, 205, 370, 370, 260, 535, 220, 345, 365, 495,  92, 130, 535},  // H
-			{440, 226, 368, 400, 245, 180, 297, 205,   0, 330, 350,  80, 365, 250, 260, 280, 450, 190,  85, 390},  // I
-			{168, 244, 145, 100, 400, 175, 245, 370, 330,   0,  66, 290, 240, 140,  95, 135, 100, 285, 360, 205},  // L 
-			{225, 241, 110,  70, 375, 185, 280, 370, 350,  66,   0, 305, 300, 140, 120, 175, 130, 280, 370, 260},  // M
-			{355, 234, 388, 460, 350, 135, 285, 260,  80, 290, 305,   0, 273, 220, 260, 250, 330, 235, 155, 310},  // N
-			{110, 380, 355, 310, 595, 220, 410, 535, 365, 240, 300, 273,   0, 305, 200, 140, 213, 415, 435,  66},  // O
-			{290, 100, 133, 190, 265, 102, 125, 220, 250, 140, 140, 220, 305,   0, 115, 150, 230, 140, 185, 297},  // P
-			{185, 193, 138, 155, 340,  85, 225, 345, 260,  95, 120, 260, 200, 115,   0,  75, 150, 230, 290, 193},  // R
-			{130, 253, 190, 205, 395,  95, 285, 365, 280, 135, 175, 250, 140, 150,  75,   0, 137, 300, 330, 135},  // S
-			{105, 329, 220, 150, 555, 255, 330, 495, 450, 100, 130, 330, 213, 230, 150, 137,   0, 380, 455, 155},  // T
-			{435,  80, 220, 302, 130, 195, 120,  92, 190, 285, 280, 235, 415, 140, 230, 300, 380,   0, 132, 425},  // U
-			{470, 199, 385, 410, 260, 200, 230, 130,  85, 360, 370, 155, 435, 185, 290, 330, 455, 132,   0, 452},  // V
-			{ 67, 374, 330, 265, 593, 227, 520, 535, 390, 205, 260, 310,  66, 297, 193, 135, 155, 425, 452,   0}   // Z
-		};
-	     //    A    B    C    D    E    F    G    H    I    L    M    N    O    P    R    S    T    U    V    Z   
-         
-        return SLD[state->city][goal->city];   
+      (void)goal;
+    switch(choice_of_heuristic) {
+        case 0:
+            return 0.0f;
+
+        case 1:
+            for (int i=0; i<NUM_JUGS; i++) {
+                if (state->jug_levels[i]==TARGET_AMOUNT) {
+                    return 0.0f;
+                }
+            }
+            return 1.0f;
+
+        case 2:
+            {
+                int min_diff=1000000;
+                int current_diff;
+                int goal_found=0;
+                for(int i=0; i<NUM_JUGS; ++i){
+                    if (state->jug_levels[i]== TARGET_AMOUNT) {
+                        goal_found=1;
+                        break;
+                    }
+                    current_diff=abs(state->jug_levels[i]-TARGET_AMOUNT);
+                    if(current_diff<min_diff) {
+                        min_diff=current_diff;
+                    }
+                }
+                return goal_found ? 0.0f : (float)min_diff;
+            }
+            break;
+
+        default:
+            printf("ERROR in Heuristic\n");
+            return 0.0f;
+    }
 }
 
 //_______________ Update if your goal state is not determined initially ___________________________________
 int Goal_Test(const State *const state, const State *const goal_state)
 {
-	if(PREDETERMINED_GOAL_STATE)	
-		return Compare_States(state, goal_state); 
-	else
-		return 1;
+	(void)goal_state;
+
+    int i;
+    for (i= 0; i<NUM_JUGS; i++) {
+        if (state->jug_levels[i] == TARGET_AMOUNT) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 // ==================== WRITE YOUR OPTIONAL FUNCTIONS (IF REQUIRED) ==========================
@@ -228,10 +251,3 @@ Finally, it returns how many valid actions there are.
 */
 
 // TR: Uygulanabilir eylemleri diziye atar ve kac eylem gerektigini verir.
-
-int main()
-{
-	/*This place should be written, 
-	it is empty for now because we have not determined the state of the heuritistic function 
-	-riza*/
-}
