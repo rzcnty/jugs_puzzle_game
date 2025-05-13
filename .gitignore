@@ -55,4 +55,8 @@ dkms.conf
 *.dev
 *.layout
 Makefile.win
+.vscode
+launch.json
+tasks.json
+JugsPuzzle
 
