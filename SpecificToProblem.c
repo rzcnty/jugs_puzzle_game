@@ -80,7 +80,7 @@ int Result(const State *const parent_state, const enum ACTIONS action, Transitio
 	int amount_to_pour;
     int empty_space_in_target;
     
-    if (action==FILL_JUG_2 || action==EMPTY_JUG_2 || action==POUR_0_TO_2 ||action==POUR_2_TO_0 || action==POUR_1_TO_2 || action==POUR_2_TO_1 && NUM_JUGS<3) {    	
+    if ((action==FILL_JUG_2 || action==EMPTY_JUG_2 || action==POUR_0_TO_2 ||action==POUR_2_TO_0 || action==POUR_1_TO_2 || action==POUR_2_TO_1) && (NUM_JUGS<3)) {    	
             return 0;
         }
 

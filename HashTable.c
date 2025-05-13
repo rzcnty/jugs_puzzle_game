@@ -1,6 +1,6 @@
 
 #include "data_types.h"
-#include "hashTable.h"
+#include "HashTable.h"
 #include "GRAPH_SEARCH.h"
 #include <stdio.h>
 #include <stdlib.h>

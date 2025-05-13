@@ -11,7 +11,7 @@
 #include <string.h>
 #include "GRAPH_SEARCH.h"
 #include "data_types.h"
-#include "hashTable.h"
+#include "HashTable.h"
 
 //______________________________________________________________________________
 Node* First_InsertFrontier_Search_TREE(const enum METHODS method, Node *const root, State *const goal_state, float alpha)
