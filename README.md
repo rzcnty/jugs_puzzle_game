@@ -49,3 +49,9 @@ there are 2 jugs and 3 jugs.
 Read not only this title, but also the above, check the table and look at the changed parts. If there is something you do not understand, send me a message or call me, I will try to explain. And we have 3 days left for all this. Good luck to all :))
 
 -Riza
+
+PS: For compile:
+
+```bash
+gcc *.c -o jugs_puzzle_game
+```
